@@ -1,0 +1,23 @@
+[package]
+name = "gw2-build-bank"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+web-view = { version = "0.7.3", features = ["edge"] }
+actix-web = "3"
+actix-utils = "1.0.3"
+actix-rt = "1.0.0"
+actix-multipart = "0.2.0"
+
+maud = { version = "0.21.0", features = ["actix-web"] }
+
+serde = { version = "1.0.126", features = ["derive"] }
+toml = "0.5.8"
+
+clipboard = "0.5.0"
+
+rust-embed="5.9.0"
+mime_guess = "2.0.3"
