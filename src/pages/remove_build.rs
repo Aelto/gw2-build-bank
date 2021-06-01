@@ -19,7 +19,7 @@ pub async fn render(_req: HttpRequest) -> HttpResponse {
     form method="post" action="/api/build/remove" {
       select name="build_name" {
         @for build in builds {
-          option value={(build.name)} { (build.name) }
+          option value={(build.name)} { "[" (build.profession) "] - " (build.name) }
         }
       }
 

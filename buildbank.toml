@@ -1,4 +1,17 @@
 [[builds]]
-template = 'sdfsdfsdfsdfsdf'
-name = 'sdfsdfsdfsdfsdf'
+template = '[&DQMdLSYeKx8UARQBkwGKAcwShgCNAQcB+RKJAQAAAAAAAAAAAAAAAAAAAAA=]'
+name = 'PVP - hammer'
+description = """
+berserker amulet\r
+sanctuary runes\r
+cleanse & might on hit sigils"""
 profession = 'engineer'
+
+[[builds]]
+template = '[&DQkPPgMZNCvcEdwRBhIGEisSKxLUEdQRyhHKEQECBAArEgYS1BEAAAAAAAA=]'
+name = 'PVP - herald'
+description = """
+berserker amulet\r
+rune of resistance\r
+s/s - staff"""
+profession = 'revenant'

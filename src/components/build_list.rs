@@ -5,7 +5,7 @@ pub fn build_list(builds: Vec<Build>) -> Markup {
   html! {
     ul class="build-list" {
       @for build in builds {
-        li onclick={"setClipboard('" (build.template) "')"} {
+        li onclick={"setClipboard('" (build.template) "')"} title=(build.description) {
           img src={"/assets/icons/"(build.profession)".png"};
           (build.name)
         }
@@ -17,16 +17,17 @@ pub fn build_list(builds: Vec<Build>) -> Markup {
         const formData  = new FormData();
         formData.append('text', text);
 
-        fetch('/api/program/clipboard', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-          },
-          body: `text=${text}`
-        });
+        //fetch('/api/program/clipboard', {
+        //  method: 'POST',
+        //  headers: {
+        //    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        //  },
+        //  body: `text=${text}`
+        //});
         
         // unfortunately doesn't work in the webview
-        //navigator.clipboard.writeText(text);
+        console.log(text);
+        navigator.clipboard.writeText(text);
       }
     " }
 
@@ -67,7 +68,7 @@ pub fn build_list(builds: Vec<Build>) -> Markup {
         left: -24px;
         top: 50%;
         transform: translate(-50%, -50%);
-        filter: drop-shadow(0px 1px 5px rgba(20, 20, 20, 0.2));
+        filter: drop-shadow(0px 1px 0px rgba(20, 20, 20, .9));
       }
     " }
   }

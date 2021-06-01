@@ -14,6 +14,12 @@ pub fn page(page_title: &str, page_content: &Markup) -> Markup {
         div id="content" {
           (page_content)
         }
+
+        div id="background" {
+          img.pattern_1 src="/assets/pattern3.jpg";
+          img.pattern_2 src="/assets/pattern5.jpg";
+          img.pattern_3 src="/assets/HoT_Rytlock_KeyArt_Final.png";
+        }
       }
     }
   }

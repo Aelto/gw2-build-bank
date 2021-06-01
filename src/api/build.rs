@@ -8,6 +8,7 @@ use actix_web::{web, HttpRequest, HttpResponse, Result, http};
 pub struct CreateBuildBody {
   pub build_template: String,
   pub build_name: String,
+  pub build_description: String,
   pub build_profession: String
 }
 
@@ -15,6 +16,7 @@ pub async fn create_build(_req: HttpRequest, form: web::Form<CreateBuildBody>) -
   let build = Build::new(
     &form.build_template,
     &form.build_name,
+    &form.build_description,
     &form.build_profession
   );
 

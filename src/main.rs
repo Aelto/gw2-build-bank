@@ -6,7 +6,7 @@
 
 use std::{sync::mpsc, thread};
 use actix_web::{App, web, HttpServer};
-use web_view::Content;
+use wry::application::platform::windows::WindowBuilderExtWindows;
 
 mod pages;
 mod components;
@@ -17,13 +17,13 @@ mod utils;
 mod asset_handler;
 
 #[actix_rt::main]
-async fn main() -> std::io::Result<()> {
+async fn main() -> wry::Result<()> {
   let (server_tx, server_rx) = mpsc::channel();
   let (port_tx, port_rx) = mpsc::channel();
 
   // start actix web server in separate thread
   thread::spawn(move || {
-    let sys = actix_rt::System::new("actix-example");
+    let sys = actix_rt::System::new("guild-bank-actix");
 
     #[cfg(not(debug_assertions))]
     let address = "127.0.0.1:0";
@@ -72,22 +72,109 @@ async fn main() -> std::io::Result<()> {
 
   dbg!(port);
 
-  // start web view in current thread
-  // and point it to a port that was bound
-  // to actix web server
-  let webview = web_view::builder()
-      .title("GW2 build bank")
-      .content(Content::Url(format!("http://127.0.0.1:{}/", port)))
-      .size(350, 450)
-      .resizable(true)
-      .debug(true)
-      .user_data(())
-      .invoke_handler(|_webview, _arg| Ok(()))
-      .run()
-      .unwrap();
+  use wry::{
+    application::{
+      event::{Event, WindowEvent},
+      event_loop::{ControlFlow, EventLoop},
+      window::{Window, WindowBuilder, Icon},
+      dpi::PhysicalSize,
+    },
+    webview::{RpcRequest, WebViewBuilder},
+  };
+
+  let event_loop = EventLoop::new();
+  let mut webviews = std::collections::HashMap::new();
+  let window = WindowBuilder::new()
+    .with_inner_size(PhysicalSize::new(350, 450))
+    .with_decorations(false)
+    .with_transparent(true)
+    .with_title("GW2 Build bank")
+    .build(&event_loop)
+    .unwrap();
+
+  let (window_tx, window_rx) = std::sync::mpsc::channel();
+
+  let handler = move |window: &Window, req: RpcRequest| {
+    if req.method == "minimize" {
+      window.set_minimized(true);
+    }
+    if req.method == "maximize" {
+      if window.is_maximized() {
+        window.set_maximized(false);
+      } else {
+        window.set_maximized(true);
+      }
+    }
+    if req.method == "close" {
+      let _ = window_tx.send(window.id());
+
+      // weird case where the event is not captured instantly until a new event
+      // is triggered, so we minimize the window to trigger it twice.
+      window.set_minimized(true);
+
+    }
+    if req.method == "drag_window" {
+      let _ = window.drag_window();
+    }
+    None
+  };
+
+  let webview = WebViewBuilder::new(window)
+    .unwrap()
+    .with_url(&format!("http://127.0.0.1:{}/", port))?
+    .with_initialization_script(&get_drag_script())
+    .with_transparent(true)
+    .with_rpc_handler(handler)
+    .build()?;
+
+  webviews.insert(webview.window().id(), webview);
+
+  event_loop.run(move |event, _, control_flow| {
+    *control_flow = ControlFlow::Wait;
+    if let Ok(id) = window_rx.try_recv() {
+      webviews.remove(&id);
+      if webviews.is_empty() {
+        *control_flow = ControlFlow::Exit
+      }
+    }
+
+    if let Event::WindowEvent { event, window_id } = event {
+      match event {
+        WindowEvent::CloseRequested => {
+          webviews.remove(&window_id);
+          if webviews.is_empty() {
+            *control_flow = ControlFlow::Exit
+          }
+        }
+        WindowEvent::Resized(_) => {
+          let _ = webviews[&window_id].resize();
+        }
+        _ => (),
+      }
+    }
+  });
 
   // gracefully shutdown actix web server
-  let _ = server.stop(true).await;
+  server.stop(true).await;
 
-    Ok(())
+  Ok(())
+}
+
+fn get_drag_script() -> String {
+  let script = r#"
+  (function () {
+    window.addEventListener('DOMContentLoaded', (event) => {
+      document.getElementById('minimize').addEventListener('click', () => rpc.notify('minimize'));
+      //document.getElementById('maximize').addEventListener('click', () => rpc.notify('maximize'));
+      document.getElementById('close').addEventListener('click', () => rpc.notify('close'));
+      document.addEventListener('mousedown', (e) => {
+        if (e.target.classList.contains('drag-region') && e.buttons === 1) {
+          window.rpc.notify('drag_window');
+        }
+      })
+    });
+  })();
+  "#;
+
+  script.to_string()
 }

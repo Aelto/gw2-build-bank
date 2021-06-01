@@ -6,7 +6,8 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-web-view = { version = "0.7.3", features = ["edge"] }
+wry = "0.9"
+
 actix-web = "3"
 actix-utils = "1.0.3"
 actix-rt = "1.0.0"

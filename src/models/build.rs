@@ -18,14 +18,16 @@ struct Storage {
 pub struct Build {
   pub template: String,
   pub name: String,
+  pub description: String,
   pub profession: String
 }
 
 impl Build {
-  pub fn new(template: &str, name: &str, profession: &str) -> Self {
+  pub fn new(template: &str, name: &str, description: &str, profession: &str) -> Self {
     Build {
       template: template.to_owned(),
-      name: template.to_owned(),
+      name: name.to_owned(),
+      description: description.to_owned(),
       profession: profession.to_owned()
     }
   }

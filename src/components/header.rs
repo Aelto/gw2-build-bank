@@ -26,7 +26,7 @@ fn master_css_content() -> String {
     display: flex;
     flex-direction: column;
     font-family: Bahnschrift;
-    height: 100vh;
+    height: calc(100vh - 2em);
     overflow-y: hidden;
   
     padding: 0;
@@ -35,10 +35,21 @@ fn master_css_content() -> String {
     color: #5f615c;
   }
 
+  html {
+    padding: 1em;
+  }
+
+  body {
+    position: relative;
+    box-shadow: 0px 0px 12px -5px rgb(20 20 20 / 80%);
+    border-radius: 6px;
+  }
+
   #content {
     overflow-y: auto;
-    margin-top: 3em;
     flex-grow: 1;
+    padding: 0 3em;
+    padding-top: 1.3em;
   }
 
 
@@ -48,9 +59,22 @@ fn master_css_content() -> String {
     color: rgb(229, 212, 166);
     position: relative;
   }
+  .menu .left {
+    flex-grow: 1;
+  }
+  .menu .left, .menu .right {
+    display: flex;
+  }
+  .menu .right a {
+    padding: 4px;
+  }
+  .menu .right a:hover {
+    filter: brightness(1.5);
+  }
   .menu a {
     text-decoration: none;
     color: rgb(229, 212, 166);
+    cursor: pointer;
   }
   .menu a + a {
     margin-left: 1em;
@@ -60,16 +84,27 @@ fn master_css_content() -> String {
   }
   .menu .background {
     position: absolute;
-    top: 0;
+    top: -2px;
     left: 0;
     width: 100%;
     height: 200%;
     transform: rotate(180deg);
     z-index: -1;
+    filter: drop-shadow(2px 4px 6px rgba(20, 20, 20, .4));
   }
-
-  .menu .pattern_1 {
-    position: fixed;
+  
+  #background {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    z-index: -2;
+    overflow: hidden;
+  }
+  .pattern_1 {
+    position: absolute;
     top: 0%;
     right: -25%;
     z-index: -2;
@@ -77,8 +112,8 @@ fn master_css_content() -> String {
     height: 50%;
   }
 
-  .menu .pattern_2 {
-    position: fixed;
+  .pattern_2 {
+    position: absolute;
     left: -10%;
     bottom: -50%;
     z-index: -2;
@@ -88,6 +123,39 @@ fn master_css_content() -> String {
     height: 110%;
   }
 
-  
+  .pattern_3 {
+    position: absolute;
+    left: -6%;
+    bottom: -28%;
+    z-index: -3;
+    opacity: 0.2;
+    width: 110%;
+    height: 110%;
+    transform: rotateY(180deg);
+    filter: grayscale(1);
+  }
+
+  label, input[type='submit'] {
+    margin-top: 2em;
+    display: block;
+  }
+
+  label, select {
+    margin-top: 1em;
+  }
+
+  input, select, textarea {
+    border: solid 1px;
+    padding: 4px;
+    background: rgba(255, 255, 255, .8);
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1em;
+    font-family: inherit;
+  }
+
+  option {
+    font-size: 1.3em;
+  }
   ".to_owned()
 }
