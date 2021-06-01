@@ -1,4 +1,3 @@
-use std::fmt::write;
 use std::fs;
 use std::io;
 use std::io::Write;
@@ -68,6 +67,16 @@ impl Build {
     Ok(storage.builds)
   }
 
+  pub fn by_name(name: &str) -> io::Result<Option<Self>> {
+    let builds = Self::all()?;
+
+    Ok(
+      builds
+      .into_iter()
+      .find(|build| build.name == name)
+    )
+  }
+
   pub fn exists(name: &str) -> io::Result<bool> {
     let already_contains_name = Self::all()?
     .iter()
@@ -95,5 +104,11 @@ impl Build {
     file.write_all(content.as_bytes())?;
 
     Ok(())
+  }
+
+  pub fn update(self) -> io::Result<bool> {
+    Self::remove(&self.name)?;
+    
+    self.insert()
   }
 }

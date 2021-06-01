@@ -6,7 +6,6 @@
 
 use std::{sync::mpsc, thread};
 use actix_web::{App, web, HttpServer};
-use wry::application::platform::windows::WindowBuilderExtWindows;
 
 mod pages;
 mod components;
@@ -38,6 +37,7 @@ async fn main() -> wry::Result<()> {
       .service(web::resource("/").route(web::get().to(pages::root::render)))
       .service(web::resource("/build/create").route(web::get().to(pages::create_build::render)))
       .service(web::resource("/build/remove").route(web::get().to(pages::remove_build::render)))
+      .service(web::resource("/build/edit").route(web::get().to(pages::edit_build::render)))
   
       // api endpoints
       .service(
@@ -47,6 +47,8 @@ async fn main() -> wry::Result<()> {
           .route("/program/clipboard", web::post().to(api::program::clipboard))
           .route("/build/create", web::post().to(api::build::create_build))
           .route("/build/remove", web::post().to(api::build::remove_build))
+          .route("/build/update", web::post().to(api::build::update_build))
+          .route("/build/{build_name}", web::get().to(api::build::get_build))
       )
   
     })
@@ -76,7 +78,7 @@ async fn main() -> wry::Result<()> {
     application::{
       event::{Event, WindowEvent},
       event_loop::{ControlFlow, EventLoop},
-      window::{Window, WindowBuilder, Icon},
+      window::{Window, WindowBuilder},
       dpi::PhysicalSize,
     },
     webview::{RpcRequest, WebViewBuilder},

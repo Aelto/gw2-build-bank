@@ -15,6 +15,10 @@ pub fn menu(page_title: &str) -> Markup {
         (menu_link(&html! {
           "remove"
         }, "/build/remove", page_title, "remove build"))
+
+        (menu_link(&html! {
+          "edit"
+        }, "/build/edit", page_title, "edit build"))
       }
       div.right.drag-region {
         a id="minimize" { "_" }
