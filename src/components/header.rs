@@ -63,7 +63,7 @@ fn master_css_content() -> String {
     flex-grow: 1;
   }
   .menu .left, .menu .right {
-    display: flex;
+    
   }
   .menu .right a {
     padding: 4px;

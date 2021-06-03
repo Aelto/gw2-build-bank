@@ -4,8 +4,9 @@
 // It allows the binary to start in background without a cli window.
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::{sync::mpsc, thread};
+use std::{ops::Add, sync::{Arc, Mutex, mpsc}, thread, time::{Duration, Instant}};
 use actix_web::{App, web, HttpServer};
+use wry::application::{event, event_loop::EventLoopWindowTarget, platform::windows::WindowBuilderExtWindows};
 
 mod pages;
 mod components;
@@ -72,13 +73,11 @@ async fn main() -> wry::Result<()> {
   let port = port_rx.recv().unwrap();
   let server = server_rx.recv().unwrap();
 
-  dbg!(port);
-
   use wry::{
     application::{
       event::{Event, WindowEvent},
       event_loop::{ControlFlow, EventLoop},
-      window::{Window, WindowBuilder},
+      window::{Window, WindowBuilder, Icon},
       dpi::PhysicalSize,
     },
     webview::{RpcRequest, WebViewBuilder},
@@ -91,6 +90,7 @@ async fn main() -> wry::Result<()> {
     .with_decorations(false)
     .with_transparent(true)
     .with_title("GW2 Build bank")
+    .with_taskbar_icon(Some(asset_handler::get_icon()))
     .build(&event_loop)
     .unwrap();
 
@@ -129,14 +129,38 @@ async fn main() -> wry::Result<()> {
     .with_rpc_handler(handler)
     .build()?;
 
+  let id = webview.window().id();
   webviews.insert(webview.window().id(), webview);
 
-  event_loop.run(move |event, _, control_flow| {
-    *control_flow = ControlFlow::Wait;
+  let (keyboard_tx, keyboard_rx) = std::sync::mpsc::sync_channel(2);
+
+
+  inputbot::KeybdKey::MKey.bind(move || {
+    dbg!("yes");
+    if inputbot::KeybdKey::LControlKey.is_pressed() {
+      dbg!("2");
+      keyboard_tx.send(id);
+    }
+  });
+
+  inputbot::handle_input_events();
+
+
+  event_loop.run(move |event, window_target, control_flow| {
+    *control_flow = ControlFlow::WaitUntil(Instant::now() + Duration::from_secs(1));
+
     if let Ok(id) = window_rx.try_recv() {
       webviews.remove(&id);
       if webviews.is_empty() {
         *control_flow = ControlFlow::Exit
+      }
+    }
+
+    if let Ok(id) = keyboard_rx.try_recv() {
+      if let Some(window) = webviews.get(&id) {
+        let window = window.window();
+        window.set_minimized(false);
+        window.set_focus();
       }
     }
 

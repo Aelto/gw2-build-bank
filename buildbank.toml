@@ -13,5 +13,13 @@ name = 'PVP - herald'
 description = """
 berserker amulet\r
 rune of resistance\r
-s/s - staff"""
+s/s - staffs"""
 profession = 'revenant'
+
+[[builds]]
+template = '[&DQMdLSYeKx8UARQBkwGKAcwShgCNAQcB+RKJAQAAAAAAAAAAAAAAAAAAAAA=]'
+name = 'PVP - flamethrower'
+description = """
+amulet: berserker\r
+mainhand: hammer"""
+profession = 'engineer'

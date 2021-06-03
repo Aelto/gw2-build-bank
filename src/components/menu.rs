@@ -21,7 +21,7 @@ pub fn menu(page_title: &str) -> Markup {
         }, "/build/edit", page_title, "edit build"))
       }
       div.right.drag-region {
-        a id="minimize" { "_" }
+        a id="minimize" { "-" }
         a id="close" { "x" }
       }
 

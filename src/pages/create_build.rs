@@ -24,13 +24,13 @@ pub async fn render(_req: HttpRequest) -> HttpResponse {
 
     form method="post" action="/api/build/create" {
       label for="name" { "Name" }
-      input id="name" name="build_name";
+      input id="name" name="build_name" autocomplete="false";
 
       label for="tooltip" { "Tooltip" };
-      textarea id="tooltip" name="build_description" {}
+      textarea id="tooltip" name="build_description" autocomplete="false" {}
 
       label for="template" { "Template" }
-      input id="template" name="build_template" value=(template_default_value);
+      input id="template" name="build_template" autocomplete="false" value=(template_default_value);
 
       select name="build_profession" {
         option value="mesmer" { "mesmer" }

@@ -121,8 +121,6 @@ pub async fn update_build(_req: HttpRequest, form: web::Form<UpdateBuildBody>) -
   build.template = form.build_template.to_owned();
   build.description = form.build_description.to_owned();
 
-  dbg!(&build.profession);
-
   build.update()
   .map_err(|err| {
     HttpResponse::InternalServerError()

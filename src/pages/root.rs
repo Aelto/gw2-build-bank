@@ -26,6 +26,8 @@ pub async fn render(_req: HttpRequest) -> HttpResponse {
 
 fn get_stylesheet() -> String {
   "
-    
+    #content {
+      padding-top: 3em;
+    }
   ".to_owned()
 }
