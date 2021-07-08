@@ -4,16 +4,16 @@
 A minimalist tool to store build templates from the game Guild Wars 2.
 
 ## Demo
-You can find a video demo [here on Youtube](https://www.youtube.com/watch?v=PRpPOlQEKt8)
+You can watch a video demo [here on Youtube](https://www.youtube.com/watch?v=PRpPOlQEKt8)
 
-## How minimalist
+## Minimalist
 The tool doesn't try to do a hundred things, no build preview, no gear storage
 either and no automatic template swapping.
 
 Instead it uses your clipboard and the native Guild Wars 2 feature to copy/paste templates from the clipboard.
 
 ## Lightweight
-The tool was made to be able to run in background without crippling the host' machine. During my tests, which may vary depending on the machine, the application use the following resources:
+The tool was made to be able to run in background without crippling the host' machine. During my tests, which may vary depending on the machine, the application uses the following resources:
  - 0% cpu
  - 18mb of ram
  - 0% disk
@@ -33,4 +33,4 @@ Because the application is meant to run in the background, the Guild Wars 2 Buil
 ## Known issues
 The [UI library i used](https://docs.microsoft.com/fr-fr/microsoft-edge/webview2/) is still being worked on by Microsoft and has one little bug i noticed. If you move the window the dropdown lists will still appear at the previous position.
 
-It's a rather small issue that be ignored if you don't move the window around.
+It's a rather small issue that can be ignored if you don't move the window around.
