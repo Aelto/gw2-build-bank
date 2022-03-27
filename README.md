@@ -8,8 +8,8 @@ You can watch a video demo [here on Youtube](https://www.youtube.com/watch?v=PRp
 
 ## Getting it
 
-### Prebuild binaries
-Get one of the prebuild binaries from the [releases](https://github.com/Aelto/gw2-build-bank/releases)
+### Prebuilt binaries
+Get one of the prebuilt binaries from the [releases](https://github.com/Aelto/gw2-build-bank/releases)
 
 ### Compiling from the source
  1. Start by installing the Rust compiler using the instructions related to your operating system
