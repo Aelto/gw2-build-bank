@@ -6,6 +6,18 @@ A minimalist tool to store build templates from the game Guild Wars 2.
 ## Demo
 You can watch a video demo [here on Youtube](https://www.youtube.com/watch?v=PRpPOlQEKt8)
 
+## Getting it
+
+### Prebuild binaries
+Get one of the prebuild binaries from the [releases](https://github.com/Aelto/gw2-build-bank/releases)
+
+### Compiling from the source
+ 1. Start by installing the Rust compiler using the instructions related to your operating system
+ 2. Download the source code from the [releases]https://github.com/Aelto/gw2-build-bank/releases), using the `Source code (zip)` links
+ 3. Decompress the source and open a terminal in the new decompressed directory for the project
+ 4. Run the following command: `cargo build --release`
+ 5. Head into `target/release` and get the binary/executable that just generated. It should be named `gw2-build-bank`
+
 ## Minimalist
 The tool doesn't try to do a hundred things, no build preview, no gear storage
 either and no automatic template swapping.
